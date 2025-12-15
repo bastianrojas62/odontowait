@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+{% block title %}Registro de usuario · OdontoWait{% endblock %}
+{% block content %}
+
+<h2 style="margin-top:0">Crear cuenta</h2>
+
+<form method="post" style="max-width:420px;">
+  {% csrf_token %}
+  <table>
+    <tr>
+      <th>Usuario</th>
+      <td><input type="text" name="username" required></td>
+    </tr>
+    <tr>
+      <th>Correo</th>
+      <td><input type="email" name="email" required></td>
+    </tr>
+    <tr>
+      <th>Contraseña</th>
+      <td><input type="password" name="password1" required></td>
+    </tr>
+    <tr>
+      <th>Repetir contraseña</th>
+      <td><input type="password" name="password2" required></td>
+    </tr>
+  </table>
+
+  <p style="margin-top:12px;">
+    <button class="btn" type="submit">Registrar</button>
+    <a href="{% url 'login' %}" class="btn sec">Volver al login</a>
+  </p>
+</form>
+
+{% endblock %}

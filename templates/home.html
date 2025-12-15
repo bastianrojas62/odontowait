@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Inicio · OdontoWait{% endblock %}
+
+{% block content %}
+
+<div class="layout-two">
+  <!-- Columna izquierda -->
+  <section class="card">
+    <div class="tagline">
+      <span>🦷 OdontoWait</span>
+      <span>Gestión de listas de espera odontológicas</span>
+    </div>
+
+    <h1 class="hero-title">Panel de Gestión Odontológica</h1>
+    <p class="hero-subtitle">
+      Desde este panel se gestionan los pacientes derivados desde CESFAM, la lista de espera
+      priorizada y el seguimiento de las citas agendadas. El objetivo es reducir la pérdida de horas
+      médicas y optimizar la atención.
+    </p>
+
+    <div class="kpi-grid">
+      <div class="kpi-card">
+        <div class="kpi-label">Pacientes registrados</div>
+        <div class="kpi-value">{{ kpis.pacientes|default:"0" }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">En lista de espera</div>
+        <div class="kpi-value">{{ kpis.pendientes_espera|default:"0" }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Odontólogos activos</div>
+        <div class="kpi-value">{{ kpis.odontologos|default:"0" }}</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Citas de hoy</div>
+        <div class="kpi-value">{{ kpis.citas_hoy|default:"0" }}</div>
+      </div>
+    </div>
+
+    <!-- Acciones (sin botón "Citas") -->
+    <div class="quick-actions">
+      <a href="/pacientes/" class="btn prim">Pacientes</a>
+      <a href="/espera/" class="btn sec">Lista de espera</a>
+      <a href="/agenda/bloques/" class="btn ghost">Bloques (Disponibilidad)</a>
+      <a href="/admin/" class="btn ghost">Admin</a>
+    </div>
+  </section>
+
+  <!-- Columna derecha -->
+  <aside class="card">
+    <h2 class="section-title">Próximas citas</h2>
+    <p class="section-subtitle">
+      Seguimiento de las atenciones agendadas y control de asistencia.
+    </p>
+
+    {% if proximas_citas %}
+      <div class="tabla-wrap">
+        <table class="tabla-citas-home">
+          <thead>
+            <tr>
+              <th class="col-fecha">Fecha y hora</th>
+              <th>Paciente</th>
+              <th>Odontólogo</th>
+              <th class="col-estado">Estado</th>
+              <th class="col-accion">Acción</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% for cita in proximas_citas %}
+            <tr>
+              <td class="col-fecha">{{ cita.inicia_en|date:"d-m H:i" }}</td>
+              <td>{{ cita.paciente }}</td>
+              <td>{{ cita.odontologo }}</td>
+              <td class="col-estado">{{ cita.get_estado_display|default:cita.estado }}</td>
+
+              <td class="col-accion">
+                <div class="acciones-cita">
+                  <form method="post" action="{% url 'cita_estado' cita.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="estado" value="CONFIRMADA">
+                    <button class="icon-btn ok" type="submit" title="Confirmar">✅</button>
+                  </form>
+
+                  <form method="post" action="{% url 'cita_estado' cita.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="estado" value="NO_CONTESTA">
+                    <button class="icon-btn phone" type="submit" title="No contesta">📞</button>
+                  </form>
+
+                  <form method="post" action="{% url 'cita_estado' cita.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="estado" value="NO_ASISTE">
+                    <button class="icon-btn no" type="submit" title="No asiste">🚫</button>
+                  </form>
+
+                  <form method="post" action="{% url 'cita_estado' cita.pk %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="estado" value="CANCELADA">
+                    <button class="icon-btn cancel" type="submit" title="Cancelar">✖</button>
+                  </form>
+                </div>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    {% else %}
+      <p style="font-size:0.85rem; color:#9ca3af; margin-top:6px;">
+        No hay citas próximas registradas.
+      </p>
+    {% endif %}
+
+    <hr style="border-color:#1f2937; margin:14px 0;">
+
+    <h3 class="section-title">Flujo del sistema</h3>
+    <p style="font-size:0.85rem; color:#9ca3af;">
+      1. CESFAM deriva al paciente y se registra.<br>
+      2. Se incorpora a la lista de espera priorizada.<br>
+      3. Se agenda una cita desde la lista de espera.<br>
+      4. Se valida disponibilidad y feriados (API externa).<br>
+      5. Se confirma o reasigna la atención según asistencia.
+    </p>
+  </aside>
+</div>
+
+{% endblock %}

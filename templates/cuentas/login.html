@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+{% block title %}Iniciar sesión{% endblock %}
+
+{% block content %}
+
+<style>
+  .login-container {
+    max-width: 380px;
+    margin: 120px auto;
+    padding: 28px;
+    background: rgba(15, 23, 42, 0.92);
+    border-radius: 14px;
+    border: 1px solid #1f2937;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.45);
+  }
+  .login-title {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 6px;
+    text-align: center;
+  }
+  .login-subtitle {
+    text-align: center;
+    font-size: 0.85rem;
+    color: #9ca3af;
+    margin-bottom: 14px;
+  }
+  .login-container label {
+    display: block;
+    font-size: 0.85rem;
+    color: #d1d5db;
+    margin-bottom: 4px;
+    margin-top: 10px;
+  }
+  .login-container input {
+    width: 100%;
+    padding: 8px 10px;
+    border-radius: 8px;
+    border: 1px solid #1f2937;
+    background: #0f172a;
+    color: #e5e7eb;
+    margin-bottom: 6px;
+  }
+  .login-btn {
+    width: 100%;
+    margin-top: 14px;
+  }
+</style>
+
+<div class="login-container">
+  <h1 class="login-title">Iniciar sesión</h1>
+  <p class="login-subtitle">Acceso solo para funcionarios autorizados</p>
+
+  <form method="POST">
+    {% csrf_token %}
+    <label>Usuario</label>
+    <input type="text" name="username" required>
+
+    <label>Contraseña</label>
+    <input type="password" name="password" required>
+
+    <button class="btn prim login-btn" type="submit">Entrar</button>
+  </form>
+</div>
+
+{% endblock %}  

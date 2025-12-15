@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+{% block title %}Pacientes{% endblock %}
+
+{% block content %}
+
+<h1 class="section-title">Listado de Pacientes</h1>
+<p class="section-subtitle">
+  Gestión de pacientes registrados en el sistema.  
+  {% if perms.pacientes.add_paciente %}
+    (Hospital puede crear, editar y eliminar)
+  {% else %}
+    (CESFAM solo puede visualizar)
+  {% endif %}
+</p>
+
+<div class="quick-actions">
+  {% if perms.pacientes.add_paciente %}
+    <a href="{% url 'paciente_crear' %}" class="btn prim">➕ Nuevo paciente</a>
+  {% endif %}
+</div>
+
+<div class="card" style="margin-top: 18px;">
+  {% if pacientes %}
+    <table>
+      <thead>
+        <tr>
+          <th>RUT</th>
+          <th>Nombre</th>
+          <th>Correo</th>
+          <th>Teléfono</th>
+          <th>Comuna</th>
+          <th style="width:150px;">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for paciente in pacientes %}
+        <tr>
+          <td>{{ paciente.rut }}</td>
+          <td>{{ paciente.nombres }} {{ paciente.apellidos }}</td>
+          <td>{{ paciente.correo }}</td>
+          <td>{{ paciente.telefono }}</td>
+          <td>{{ paciente.comuna }}</td>
+          <td>
+
+            {% if perms.pacientes.change_paciente %}
+              <a href="{% url 'paciente_editar' paciente.pk %}" style="margin-right: 8px; color:#38bdf8;">
+                ✏️ Editar
+              </a>
+            {% endif %}
+
+            {% if perms.pacientes.delete_paciente %}
+              <a href="{% url 'paciente_eliminar' paciente.pk %}" style="color:#f87171;">
+                🗑️ Eliminar
+              </a>
+            {% endif %}
+
+            {% if not perms.pacientes.change_paciente and not perms.pacientes.delete_paciente %}
+              <span style="color:#9ca3af; font-size:0.8rem;">
+                Sin acciones disponibles
+              </span>
+            {% endif %}
+
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+
+  {% else %}
+    <p style="color:#9ca3af;">No hay pacientes registrados.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

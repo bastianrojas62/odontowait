@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+{% block title %}Lista de Espera{% endblock %}
+
+{% block content %}
+
+<h1 class="section-title">Lista de espera odontológica</h1>
+<p class="section-subtitle">
+  Derivaciones registradas y su estado de avance.
+  {% if perms.espera.add_entradalistaespera and not perms.espera.change_entradalistaespera %}
+    (Perfil CESFAM: puede ingresar nuevas derivaciones y ver el estado.)
+  {% elif perms.espera.change_entradalistaespera %}
+    (Perfil Hospital: puede priorizar, actualizar y cerrar casos.)
+  {% endif %}
+</p>
+
+<div class="quick-actions">
+  {% if perms.espera.add_entradalistaespera %}
+    <a href="{% url 'espera_crear' %}" class="btn prim">➕ Nueva derivación</a>
+  {% endif %}
+</div>
+
+<div class="card" style="margin-top: 18px;">
+  {% if entradas %}
+    <table>
+      <thead>
+        <tr>
+          <th>Paciente</th>
+          <th>Tratamiento</th>
+          <th>Prioridad</th>
+          <th>Puntaje</th>
+          <th>Estado</th>
+          <th>Derivado en</th>
+          <th style="width:170px;">Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for entrada in entradas %}
+        <tr>
+          <td>{{ entrada.paciente }}</td>
+          <td>{{ entrada.tratamiento }}</td>
+          <td>{{ entrada.get_prioridad_clinica_display|default:entrada.prioridad_clinica }}</td>
+          <td>{{ entrada.puntaje }}</td>
+          <td>{{ entrada.get_estado_display|default:entrada.estado }}</td>
+          <td>{{ entrada.derivado_en|date:"d-m-Y" }}</td>
+
+          
+          <td>
+
+            {% if entrada.estado == "PENDIENTE" %}
+              <a href="{% url 'espera_agendar' entrada.pk %}" class="btn prim">📅 Agendar</a>
+            {% endif %}
+
+            {% if perms.espera.change_entradalistaespera %}
+              <a href="{% url 'espera_editar' entrada.pk %}"
+                 style="margin-right: 8px; color:#38bdf8;">
+                ✏️ Actualizar
+              </a>
+            {% endif %}
+
+            {% if perms.espera.delete_entradalistaespera %}
+              <a href="{% url 'espera_eliminar' entrada.pk %}"
+                 style="color:#f87171;">
+                🗑️ Eliminar
+              </a>
+            {% endif %}
+
+            {% if not perms.espera.change_entradalistaespera and not perms.espera.delete_entradalistaespera %}
+              <span style="color:#9ca3af; font-size:0.8rem;">
+                Solo lectura
+              </span>
+            {% endif %}
+
+          </td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p style="color:#9ca3af;">No hay derivaciones registradas en la lista de espera.</p>
+  {% endif %}
+</div>
+
+{% endblock %}

@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}OdontoWait{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <style>
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #0f172a 0, #020617 45%, #000 100%);
+      color: #e5e7eb;
+    }
+    a { color: #38bdf8; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      padding: 10px 30px;
+      background: rgba(2, 6, 23, 0.95);
+      border-bottom: 1px solid #1f2937;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(12px);
+    }
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 1.4rem;
+      color: #22c55e;
+    }
+    .navbar-links {
+      display: flex;
+      gap: 16px;
+      margin-left: auto;
+      align-items: center;
+      font-size: 0.95rem;
+    }
+    .btn {
+      border-radius: 999px;
+      padding: 6px 18px;
+      border: none;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: 500;
+    }
+    .btn.prim { background: #0ea5e9; color: #0b1120; }
+    .btn.sec { background: #22c55e; color: #022c22; }
+    .btn.ghost {
+      background: transparent;
+      color: #e5e7eb;
+      border: 1px solid #1f2937;
+    }
+    .btn.ghost:hover {
+      background: #020617;
+    }
+
+    main.page {
+      max-width: 1100px;
+      margin: 26px auto;
+      padding: 0 20px 40px 20px;
+    }
+
+    .layout-two {
+      display: grid;
+      grid-template-columns: minmax(0, 2fr) minmax(0, 1.3fr);
+      gap: 18px;
+    }
+    @media (max-width: 900px) {
+      .layout-two {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    .card {
+      background: rgba(15, 23, 42, 0.92);
+      border-radius: 14px;
+      padding: 16px 18px;
+      border: 1px solid #1f2937;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.4);
+    }
+
+    .hero-title {
+      font-size: 1.6rem;
+      font-weight: 650;
+      margin-bottom: 4px;
+    }
+    .hero-subtitle {
+      font-size: 0.95rem;
+      color: #9ca3af;
+      margin-bottom: 18px;
+    }
+
+    .tagline {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      background: rgba(34, 197, 94, 0.08);
+      color: #bbf7d0;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+      margin-bottom: 10px;
+    }
+
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 12px;
+    }
+    @media (max-width: 900px) {
+      .kpi-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+    .kpi-card {
+      padding: 10px 12px;
+      border-radius: 12px;
+      border: 1px solid #1f2937;
+      background: radial-gradient(circle at top, #1d283a 0, #020617 70%);
+      font-size: 0.8rem;
+    }
+    .kpi-label {
+      color: #9ca3af;
+      margin-bottom: 4px;
+    }
+    .kpi-value {
+      font-size: 1.4rem;
+      font-weight: 650;
+    }
+
+    .quick-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .section-title {
+      font-size: 1.05rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .section-subtitle {
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin-bottom: 10px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 6px;
+      background: transparent;
+    }
+    table th, table td {
+      border: 1px solid #1f2937;
+      padding: 6px 8px;
+      font-size: 0.82rem;
+    }
+    table th {
+      background: #020617;
+      text-align: left;
+      color: #d1d5db;
+    }
+    table tbody tr:nth-child(even) {
+      background: rgba(15, 23, 42, 0.65);
+    }
+  </style>
+</head>
+<body>
+
+  <header class="navbar">
+    <div class="navbar-brand">OdontoWait</div>
+
+    <nav class="navbar-links">
+      <a href="/">Inicio</a>
+<a href="/pacientes/">Pacientes</a>
+<a href="/espera/">Lista de Espera</a>
+
+{% if perms.agenda.view_odontologo %}
+  <a href="/agenda/odontologos/">Odontólogos</a>
+{% endif %}
+
+{% if perms.agenda.view_bloque %}
+  <a href="/agenda/bloques/">Bloques</a>
+{% endif %}
+
+{% if perms.agenda.view_cita %}
+  <a href="/agenda/citas/">Citas</a>
+{% endif %}
+
+{% if user.is_staff %}
+  <a href="/admin/" class="btn ghost">Admin</a>
+{% endif %}
+    </nav>
+  </header>
+
+  <main class="page">
+    {% block content %}
+    <!-- Aquí se inyecta el contenido de cada vista -->
+    {% endblock %}
+  </main>
+
+</body>
+</html>

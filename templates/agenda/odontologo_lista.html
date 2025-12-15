@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Odontólogos</h2>
+<p><a class="btn" href="{% url 'odontologo_crear' %}">+ Nuevo odontólogo</a></p>
+<table>
+  <thead>
+    <tr><th>Nombre</th><th>Especialidad</th><th>Capacidad diaria</th><th>Activo</th><th>Acciones</th></tr>
+  </thead>
+  <tbody>
+    {% for o in odontologos %}
+    <tr>
+      <td>{{ o.nombre_completo }}</td>
+      <td>{{ o.especialidad }}</td>
+      <td>{{ o.capacidad_diaria }}</td>
+      <td>{{ o.activo|yesno:"Sí,No" }}</td>
+      <td>
+        <a class="btn sec" href="{% url 'odontologo_editar' o.pk %}">Editar</a>
+        <a class="btn sec" href="{% url 'odontologo_eliminar' o.pk %}">Eliminar</a>
+      </td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">No hay odontólogos cargados.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

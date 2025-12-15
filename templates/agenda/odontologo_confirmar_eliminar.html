@@ -1,0 +1,9 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Eliminar odontólogo</h2>
+<p>¿Seguro que deseas eliminar a <b>{{ object }}</b>?</p>
+<form method="post">{% csrf_token %}
+  <button class="btn" type="submit">Sí, eliminar</button>
+  <a class="btn sec" href="{% url 'odontologo_lista' %}">Cancelar</a>
+</form>
+{% endblock %}

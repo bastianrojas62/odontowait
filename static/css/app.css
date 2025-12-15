@@ -1,0 +1,137 @@
+:root{
+  --bg:#0f172a;        /* fondo */
+  --card:#0b1223;      /* tarjetas/nav */
+  --text:#e5e7eb;      /* texto principal */
+  --muted:#9ca3af;     /* texto secundario */
+  --brand:#22c55e;     /* botón primario */
+  --brand-2:#0ea5e9;   /* botón secundario */
+  --border:#1f2937;    /* bordes/lines */
+}
+
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  font-family:system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial;
+  color:var(--text);
+  background: radial-gradient(1200px 800px at 10% -10%, #122041 0%, #0b1223 40%, #0a0f20 70%), var(--bg);
+  min-height:100dvh;
+}
+
+/* Navbar */
+.nav{
+  position:sticky; top:0; z-index:50;
+  backdrop-filter: blur(10px);
+  background: color-mix(in srgb, var(--card) 85%, transparent);
+  border-bottom:1px solid var(--border);
+}
+.nav-inner{
+  max-width:1024px; margin:0 auto; padding:12px 16px;
+  display:flex; align-items:center; gap:12px;
+}
+.brand{
+  font-weight:700; letter-spacing:.3px;
+  background: linear-gradient(90deg, #86efac, #67e8f9);
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+}
+.nav a{
+  color:var(--text); text-decoration:none; padding:8px 10px; border-radius:10px;
+}
+.nav a:hover{ background: #111827; }
+
+/* Wrapper */
+.wrapper{ max-width:1024px; margin:24px auto; padding:0 16px; }
+.card{
+  background: color-mix(in srgb, var(--card) 94%, transparent);
+  border:1px solid var(--border);
+  border-radius:16px; padding:18px; box-shadow: 0 8px 30px rgba(0,0,0,.25);
+}
+
+/* Buttons */
+.btn{
+  display:inline-block; padding:9px 14px; border-radius:12px; text-decoration:none;
+  background:var(--brand); color:#081117; font-weight:600; border:1px solid #14532d;
+}
+.btn:hover{ filter: brightness(1.05); }
+.btn.sec{ background:var(--brand-2); border-color:#0c4a6e; color:#07131f; }
+.btn.ghost{ background:transparent; border:1px solid var(--border); color:var(--text); }
+
+/* Tables */
+table{ width:100%; border-collapse:separate; border-spacing:0; overflow:hidden; border-radius:12px; border:1px solid var(--border); }
+thead th{ text-align:left; font-size:.92rem; color:var(--muted); background:#0f172a; padding:10px 12px; border-bottom:1px solid var(--border) }
+tbody td{ padding:10px 12px; border-bottom:1px solid var(--border) }
+tbody tr:hover{ background:#0d152b }
+
+/* Forms */
+form table{ border:0 }
+form table tr > td, form table tr > th{ padding:8px 10px; border:0; vertical-align:top }
+input, select, textarea{
+  width:100%; padding:10px 12px; border-radius:10px; border:1px solid var(--border);
+  background:#0a1020; color:var(--text);
+}
+label{ color:var(--muted); font-size:.92rem }
+
+/* Messages */
+.alert{ padding:12px 14px; border-radius:12px; margin:12px 0; }
+.alert.ok{ background:#052e1a; border:1px solid #14532d }
+.alert.err{ background:#2e0505; border:1px solid #7f1d1d }
+
+/* Footer */
+.footer{ color:var(--muted); font-size:.9rem; padding:16px 0; text-align:center }
+
+tabla-wrap{
+  width: 100%;
+  overflow-x: auto; /* si la pantalla es chica, aparece scroll horizontal */
+}
+
+.tabla-citas-home{
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: auto;   /* ✅ clave: evita que empuje "Acción" fuera */
+}
+
+.tabla-citas-home th,
+.tabla-citas-home td{
+  border: 1px solid rgba(255,255,255,.08);
+  padding: 10px 12px;
+  vertical-align: middle;
+}
+
+.tabla-citas-home th{
+  text-align: left;
+  font-weight: 600;
+}
+
+/* columnas con ancho controlado */
+.col-fecha{ width: 120px; }
+.col-estado{ width: 140px; }
+.col-accion{ width: 170px; }
+
+/* acciones dentro de la celda */
+.acciones-cita{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap; /* ✅ no baja, se queda en línea dentro de la celda */
+}
+
+.acciones-cita form{
+  margin: 0;
+}
+
+/* botones redondos */
+.icon-btn{
+  width: 36px;
+  height: 36px;
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.12);
+  background: rgba(0,0,0,.25);
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+  padding: 0;
+}
+
+.icon-btn:hover{
+  background: rgba(255,255,255,.06);
+}

@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block title %}Derivación a lista de espera{% endblock %}
+
+{% block content %}
+
+<div class="card">
+  <h1 class="section-title">Registrar derivación odontológica</h1>
+  <p class="section-subtitle">
+    Complete los datos del paciente y los antecedentes clínicos entregados por el CESFAM.
+  </p>
+
+  <form method="post">
+    {% csrf_token %}
+    <table>
+      <tr>
+        <th>Paciente</th>
+        <td>{{ form.paciente }}</td>
+      </tr>
+      <tr>
+        <th>Tratamiento requerido</th>
+        <td>{{ form.tratamiento }}</td>
+      </tr>
+      <tr>
+        <th>Prioridad clínica</th>
+        <td>{{ form.prioridad_clinica }}</td>
+      </tr>
+      <tr>
+        <th>Puntaje (priorización)</th>
+        <td>{{ form.puntaje }}</td>
+      </tr>
+      <tr>
+        <th>Estado</th>
+        <td>{{ form.estado }}</td>
+      </tr>
+      <tr>
+        <th>Ficha médica / antecedentes</th>
+        <td>{{ form.observaciones }}</td>
+      </tr>
+    </table>
+
+    <p style="margin-top:12px;">
+      <button type="submit" class="btn prim">Guardar</button>
+      <a href="{% url 'espera_lista' %}" class="btn ghost">Cancelar</a>
+    </p>
+  </form>
+</div>
+
+{% endblock %}

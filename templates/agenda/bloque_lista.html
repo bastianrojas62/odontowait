@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Bloques (cupos)</h2>
+<p><a class="btn" href="{% url 'bloque_crear' %}">+ Nuevo bloque</a></p>
+<table>
+  <thead>
+    <tr><th>Odontólogo</th><th>Especialidad</th><th>Inicia</th><th>Termina</th><th>Estado</th></tr>
+  </thead>
+  <tbody>
+    {% for b in bloques %}
+    <tr>
+      <td>{{ b.odontologo }}</td>
+      <td>{{ b.especialidad }}</td>
+      <td>{{ b.inicia_en }}</td>
+      <td>{{ b.termina_en }}</td>
+      <td>{{ b.estado }}</td>
+    </tr>
+    {% empty %}
+    <tr><td colspan="5">No hay bloques aún.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}
